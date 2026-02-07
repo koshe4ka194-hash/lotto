@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { margin:0; padding:20px; background: radial-gradient(circle, #2d80d2 0%, #000 160%); font-family: sans-serif; color:white; display:flex; flex-direction:column; align-items:center; min-height:100vh; overflow-x:hidden; }
+        body { margin:0; padding:20px; background: radial-gradient(circle, #de14e1 0%, #000 160%); font-family: sans-serif; color:white; display:flex; flex-direction:column; align-items:center; min-height:100vh; overflow-x:hidden; }
         .bag { background:#fdf5e6; border:5px solid #8d6e63; border-radius:25px; padding:15px; width:150px; text-align:center; color:#3e2723; box-shadow:0 10px 20px rgba(0,0,0,0.5); margin-bottom:20px; }
         #slot { width:80px; height:80px; background:#d7ccc8; border-radius:50%; margin:10px auto; display:flex; align-items:center; justify-content:center; border:2px solid #a1887f; font-size:40px; }
         #slot img { width:80%; height:80%; object-fit:contain; }
@@ -11,7 +11,7 @@
         .btn:active { transform:translateY(2px); box-shadow:0 2px 0 #b71c1c; }
         .row { display:flex; gap:15px; justify-content:center; width:100%; max-width:900px; }
         .card { background:white; border-radius:15px; padding:15px; flex:1; box-shadow:0 10px 20px rgba(0,0,0,0.3); color:#333; min-width:250px; min-height: 200px; }
-        .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:10px; }
+        .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-top:10px; }
         .chip { height: 75px; background:white; border-radius:50%; border:2px solid #eee; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; box-shadow:0 3px 5px rgba(0,0,0,0.2); }
         .chip img { width:75%; height:75%; object-fit:contain; }
         .chip.ok::after { content:"✔"; position:absolute; width:100%; height:100%; background:rgba(46,204,113,0.85); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:bold; box-shadow:0 0 10px #2ecc71; }
@@ -33,7 +33,7 @@
 
 <script>
     const IMGS = ["img/03.png","img/04.png","img/06.png","img/08.png","img/09.png","img/2.png","img/3.png","img/5.png","img/7.png","img/10.png","img/11.png","img/12.png","img/13.png","img/14.png","img/15.png","img/16.png","img/17.png","img/18.png"];
-    const SIZE = 6;
+    const SIZE = 8;
     let bag = [], curr = null;
 
     function init() {
