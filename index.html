@@ -1,67 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <style>
-        body { margin:0; padding:20px; background: #1a472a; font-family: sans-serif; color:white; display:flex; flex-direction:column; align-items:center; }
-        .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex; justify-content:center; align-items:center; z-index:100; }
-        .card { background:white; border-radius:15px; padding:20px; color:#333; width:300px; margin:10px; min-height:100px; }
-        .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
-        .chip { height:80px; background:#eee; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; overflow:hidden; text-align:center;}
-        .chip img { width:100%; height:100%; object-fit:contain; }
-        .btn { background:#f57c00; color:white; border:none; padding:15px 30px; border-radius:10px; font-weight:bold; cursor:pointer; }
-    </style>
+<meta charset="UTF-8">
+<style>
+body { margin:0; padding:15px; background: radial-gradient(circle, #1a472a 0%, #000 180%); font-family: sans-serif; color:white; display:flex; flex-direction:column; align-items:center; min-height:100vh; overflow-x:hidden; }
+.overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:100; }
+.bag { background:#fdf5e6; border:5px solid #8d6e63; border-radius:35px; padding:20px; width:220px; text-align:center; color:#3e2723; box-shadow:0 15px 35px rgba(0,0,0,0.6); margin-bottom:15px; }
+#slot { width:110px; height:110px; background:#d7ccc8; border-radius:50%; margin:15px auto; display:flex; align-items:center; justify-content:center; border:3px solid #a1887f; box-shadow:inset 0 4px 8px rgba(0,0,0,0.3); font-size:40px; color:#a1887f; }
+#slot img { width:80%; height:80%; object-fit:contain; }
+.btn { background:linear-gradient(180deg, #ffb74d, #f57c00); color:white; border:none; padding:12px 25px; border-radius:12px; font-weight:bold; cursor:pointer; box-shadow:0 6px 0 #b71c1c; text-transform:uppercase; font-size:16px; }
+.btn:active { transform:translateY(3px); box-shadow:0 3px 0 #b71c1c; }
+.row { display:flex; gap:25px; justify-content:center; width:100%; max-width:1100px; flex-wrap:nowrap; }
+.card { background:white; border-radius:25px; padding:20px; flex:1; box-shadow:0 10px 25px rgba(0,0,0,0.4); color:#333; min-width:300px; }
+.grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:15px; }
+.chip { aspect-ratio:1; background:white; border-radius:50%; border:3px solid #eee; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; min-height:100px; }
+.chip img { width:80%; height:80%; object-fit:contain; }
+.chip.ok::after { content:"✔"; position:absolute; width:100%; height:100%; background:rgba(46, 204, 113, 0.9); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:50px; font-weight:bold; box-shadow:0 0 15px #2ecc71; }
+#st { font-weight:bold; font-size:24px; text-align:center; margin-bottom:10px; height:30px; text-shadow:0 2px 5px rgba(0,0,0,0.5); color:#ffca28; }
+</style>
 </head>
 <body>
-    <div id="startLayer" class="overlay">
-        <button class="btn" onclick="startGame()">НАЖМИ МЕНЯ ДЛЯ ПРОВЕРКИ</button>
-    </div>
-
-    <div id="debug" style="background:red; color:white; padding:10px; display:none; margin-bottom:10px; font-size:12px; border-radius:5px;"></div>
-    
-    <div style="display:flex;">
-        <div class="card"><b>ИГРОК 1</b><div id="g1" class="grid"></div></div>
-        <div class="card"><b>ИГРОК 2</b><div id="g2" class="grid"></div></div>
-    </div>
-
+<div id="startLayer" class="overlay"><h2 style="color:white; margin-bottom:20px;">Сказки А.С.Пушкина</h2><button class="btn" onclick="startGame()">НАЧАТЬ ИГРУ</button></div>
+<h2 style="margin:0 0 10px 0; font-size:28px;">Сказки А.С.Пушкина</h2>
+<div id="st">Ходите!</div>
+<div class="bag"><div style="font-size:14px; font-weight:bold;">В МЕШКЕ: <span id="cc">0</span></div><div id="slot">?</div><button class="btn" onclick="draw()">ПОТРЯСИ МЕШОК</button></div>
+<div class="row"><div class="card"><center><b style="font-size:18px;">ИГРОК 1</b></center><div id="g1" class="grid"></div></div><div class="card"><center><b style="font-size:18px;">ИГРОК 2</b></center><div id="g2" class="grid"></div></div></div>
+<button class="btn" style="margin-top:25px; background:#607d8b; box-shadow:0 4px 0 #37474f; font-size:12px;" onclick="resetGame()">СБРОСИТЬ</button>
 <script>
-    // ТВОИ ДАННЫЕ
-    const BASE = "https://koshe4ka194-hash.github.io/lotto/img/";
-    const FILES = ["03.png", "04.png", "06.png", "08.png", "09.png", "2.png", "3.png", "5.png", "7.png", "10.png", "11.png", "12.png"];
-    
-    function startGame() {
-        document.getElementById('startLayer').style.display = 'none';
-        init();
-    }
-
-    function init() {
-        const p1 = FILES.slice(0, 6).map(n => BASE + n);
-        const p2 = FILES.slice(6, 12).map(n => BASE + n);
-        
-        render("g1", p1);
-        render("g2", p2);
-    }
-
-    function render(id, items) {
-        const g = document.getElementById(id);
-        g.innerHTML = "";
-        items.forEach(src => {
-            const d = document.createElement("div");
-            d.className = "chip";
-            const img = new Image();
-            img.src = src;
-            
-            img.onload = () => { d.innerHTML = `<img src="${src}">`; };
-            img.onerror = () => { 
-                d.style.background = "#ffcccc";
-                d.innerHTML = "❌ ОШИБКА";
-                const debug = document.getElementById('debug');
-                debug.style.display = "block";
-                debug.innerHTML += `Не найдена картинка: ${src}<br>`;
-            };
-            g.appendChild(d);
-        });
-    }
+const IMGS = ["https://koshe4ka194-hash.github.io/lotto/img/03.png","https://koshe4ka194-hash.github.io/lotto/img/04.png","https://koshe4ka194-hash.github.io/lotto/img/06.png","https://koshe4ka194-hash.github.io/lotto/img/08.png","https://koshe4ka194-hash.github.io/lotto/img/09.png","https://koshe4ka194-hash.github.io/lotto/img/2.png","https://koshe4ka194-hash.github.io/lotto/img/3.png","https://koshe4ka194-hash.github.io/lotto/img/5.png","https://koshe4ka194-hash.github.io/lotto/img/7.png","https://koshe4ka194-hash.github.io/lotto/img/10.png","https://koshe4ka194-hash.github.io/lotto/img/11.png","https://koshe4ka194-hash.github.io/lotto/img/12.png","https://koshe4ka194-hash.github.io/lotto/img/13.png","https://koshe4ka194-hash.github.io/lotto/img/14.png","https://koshe4ka194-hash.github.io/lotto/img/15.png","https://koshe4ka194-hash.github.io/lotto/img/16.png","https://koshe4ka194-hash.github.io/lotto/img/17.png","https://koshe4ka194-hash.github.io/lotto/img/18.png"];
+const SIZE = 6;
+const aD = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_7314751480.mp3'); const aP = new Audio('https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a14d5e.mp3'); const aW = new Audio('https://cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3');
+let bag = [], curr = null;
+function startGame() { document.getElementById('startLayer').style.display = 'none'; aD.play().then(() => aD.pause()); resetGame(); }
+function resetGame() { curr = null; document.getElementById('slot').innerHTML = '?'; let p = [...IMGS].sort(() => Math.random() - 0.5); let p1 = p.slice(0, SIZE); let p2 = p.slice(SIZE, SIZE * 2); bag = [...p1, ...p2].sort(() => Math.random() - 0.5); render('g1', p1); render('g2', p2); document.getElementById('cc').innerText = bag.length; }
+function render(id, items) { const g = document.getElementById(id); g.innerHTML = ''; items.forEach(src => { const d = document.createElement('div'); d.className = 'chip'; d.innerHTML = '<img src="'+src+'" onerror="this.parentNode.innerText=\'❌\'" >'; d.onclick = () => { if(src===curr) { aP.currentTime=0; aP.play(); d.classList.add('ok'); check(); } }; g.appendChild(d); }); }
+function draw() { if(!bag.length) return; aD.currentTime=0; aD.play(); curr = bag.pop(); setTimeout(() => { document.getElementById('slot').innerHTML = '<img src="'+curr+'">'; document.getElementById('cc').innerText = bag.length; }, 300); }
+function check() { [1,2].forEach(n => { if(document.getElementById('g' + n).querySelectorAll('.chip.ok').length === SIZE) { aW.play(); document.getElementById('st').innerText = 'ВЫ ПОБЕДИЛИ! 🎉'; } }); }
 </script>
 </body>
 </html>
