@@ -27,6 +27,35 @@ body { margin:0; padding:10px; background: radial-gradient(circle, #501dc9 0%, #
 <div class="row"><div class="card"><center><b>ИГРОК 1</b></center><div id="g1" class="grid"></div></div><div class="card"><center><b>ИГРОК 2</b></center><div id="g2" class="grid"></div></div></div>
 <button class="btn" style="margin-top:20px; background:#607d8b; box-shadow:0 4px 0 #37474f; font-size:10px;" onclick="reset()">СБРОСИТЬ ИГРУ</button>
 <script>
+const IMGS = ["https://koshe4ka194-hash.github.io/lotto/img/03.png","https://koshe4ka194-hash.github.io/lotto/img/04.png","https://koshe4ka194-hash.github.io/lotto/img/06.png","https://koshe4ka194-hash.github.io/lotto/img/08.pn<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body { margin:0; padding:10px; background: radial-gradient(circle, #501dc9 0%, #000 180%); font-family: sans-serif; color:white; display:flex; flex-direction:column; align-items:center; min-height:100vh; overflow:hidden; }
+.overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:100; }
+.bag { background:#fdf5e6; border:4px solid #8d6e63; border-radius:25px; padding:10px; width:150px; text-align:center; color:#3e2723; box-shadow:0 10px 20px rgba(0,0,0,0.5); margin-bottom:10px; }
+#slot { width:80px; height:80px; background:#d7ccc8; border-radius:50%; margin:8px auto; display:flex; align-items:center; justify-content:center; border:2px solid #a1887f; box-shadow:inset 0 4px 8px rgba(0,0,0,0.3); }
+#slot img { width:75%; height:75%; object-fit:contain; }
+.btn { background:linear-gradient(180deg, #ffb74d, #f57c00); color:white; border:none; padding:10px 20px; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #b71c1c; text-transform:uppercase; font-size:14px; }
+.btn:active { transform:translateY(2px); box-shadow:0 2px 0 #b71c1c; }
+.row { display:flex; gap:15px; justify-content:center; width:98%; max-width:900px; flex-wrap:nowrap; }
+.card { background:white; border-radius:15px; padding:12px; flex:1; box-shadow:0 10px 20px rgba(0,0,0,0.4); color:#333; min-width:250px; }
+.grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-top:10px; }
+.chip { height: 80px; background:white; border-radius:50%; border:2px solid #eee; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; }
+.chip img { width:75%; height:75%; object-fit:contain; }
+.chip.ok::after { content:"✔"; position:absolute; width:100%; height:100%; background:rgba(46, 204, 113, 0.85); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:35px; font-weight:bold; box-shadow:0 0 10px #2ecc71; }
+#st { font-weight:bold; font-size:20px; text-align:center; margin-bottom:10px; height:24px; text-shadow:0 2px 4px rgba(0,0,0,0.5); color:#ffca28; }
+</style>
+</head>
+<body>
+<div id="startLayer" class="overlay"><h2 style="color:white; margin-bottom:20px;">Сказки А.С.Пушкина</h2><button class="btn" onclick="startAudio()">НАЧАТЬ ИГРУ</button></div>
+<h2 style="margin:0 0 5px 0; font-size:22px;">Сказки А.С.Пушкина</h2>
+<div id="st">Нажмите кнопку</div>
+<div class="bag"><div id="slot">?</div><button class="btn" onclick="draw()">ПОТРЯСИ МЕШОК</button></div>
+<div class="row"><div class="card"><center><b>ИГРОК 1</b></center><div id="g1" class="grid"></div></div><div class="card"><center><b>ИГРОК 2</b></center><div id="g2" class="grid"></div></div></div>
+<button class="btn" style="margin-top:20px; background:#607d8b; box-shadow:0 4px 0 #37474f; font-size:10px;" onclick="reset()">СБРОСИТЬ ИГРУ</button>
+<script>
 const IMGS = ["https://koshe4ka194-hash.github.io/lotto/img/03.png","https://koshe4ka194-hash.github.io/lotto/img/04.png","https://koshe4ka194-hash.github.io/lotto/img/06.png","https://koshe4ka194-hash.github.io/lotto/img/08.png","https://koshe4ka194-hash.github.io/lotto/img/09.png","https://koshe4ka194-hash.github.io/lotto/img/2.png","https://koshe4ka194-hash.github.io/lotto/img/3.png","https://koshe4ka194-hash.github.io/lotto/img/5.png","https://koshe4ka194-hash.github.io/lotto/img/7.png","https://koshe4ka194-hash.github.io/lotto/img/10.png","https://koshe4ka194-hash.github.io/lotto/img/11.png","https://koshe4ka194-hash.github.io/lotto/img/12.png","https://koshe4ka194-hash.github.io/lotto/img/13.png","https://koshe4ka194-hash.github.io/lotto/img/14.png","https://koshe4ka194-hash.github.io/lotto/img/15.png","https://koshe4ka194-hash.github.io/lotto/img/16.png","https://koshe4ka194-hash.github.io/lotto/img/17.png","https://koshe4ka194-hash.github.io/lotto/img/18.png"];
 const SIZE = 8;
 const aD = new Audio('https://github.com/koshe4ka194-hash/lotto/raw/refs/heads/main/meshok.mp3'); const aP = new Audio('https://github.com/koshe4ka194-hash/lotto/raw/refs/heads/main/fishka.mp3'); const aW = new Audio('https://github.com/koshe4ka194-hash/lotto/raw/refs/heads/main/victory.mp3');
@@ -38,4 +67,16 @@ function draw() { if(!bag.length || winLock) return; aD.currentTime=0; aD.play()
 function check() { [1,2].forEach(n => { if(document.getElementById('g' + n).querySelectorAll('.chip.ok').length === SIZE) { if(!winLock) { aW.currentTime=0; aW.play(); winLock = true; } document.getElementById('st').innerText = 'Знаток сказок Пушкина!!!'; } }); }
 </script>
 </body>
+</html>g","https://koshe4ka194-hash.github.io/lotto/img/09.png","https://koshe4ka194-hash.github.io/lotto/img/2.png","https://koshe4ka194-hash.github.io/lotto/img/3.png","https://koshe4ka194-hash.github.io/lotto/img/5.png","https://koshe4ka194-hash.github.io/lotto/img/7.png","https://koshe4ka194-hash.github.io/lotto/img/10.png","https://koshe4ka194-hash.github.io/lotto/img/11.png","https://koshe4ka194-hash.github.io/lotto/img/12.png","https://koshe4ka194-hash.github.io/lotto/img/13.png","https://koshe4ka194-hash.github.io/lotto/img/14.png","https://koshe4ka194-hash.github.io/lotto/img/15.png","https://koshe4ka194-hash.github.io/lotto/img/16.png","https://koshe4ka194-hash.github.io/lotto/img/17.png","https://koshe4ka194-hash.github.io/lotto/img/18.png"];
+const SIZE = 8;
+const aD = new Audio('https://github.com/koshe4ka194-hash/lotto/raw/refs/heads/main/meshok.mp3'); const aP = new Audio('https://github.com/koshe4ka194-hash/lotto/raw/refs/heads/main/fishka.mp3'); const aW = new Audio('https://github.com/koshe4ka194-hash/lotto/raw/refs/heads/main/victory.mp3');
+let bag = [], curr = null, winLock = false;
+function startAudio() { aD.play().then(() => aD.pause()); aP.play().then(() => aP.pause()); aW.play().then(() => aW.pause()); document.getElementById('startLayer').style.display = 'none'; reset(); }
+function reset() { curr = null; winLock = false; document.getElementById('slot').innerHTML = '?'; let p = [...IMGS].sort(() => Math.random() - 0.5); let p1 = p.slice(0, SIZE); let p2 = p.slice(SIZE, SIZE * 2); bag = [...p1, ...p2].sort(() => Math.random() - 0.5); render('g1', p1); render('g2', p2); document.getElementById('st').innerText = 'Ходите!'; }
+function render(id, items) { const g = document.getElementById(id); g.innerHTML = ''; items.forEach(src => { const d = document.createElement('div'); d.className = 'chip'; d.innerHTML = '<img src="'+src+'" onerror="this.parentNode.innerText=\'❌\'" >'; d.onclick = () => { if(src===curr) { aP.currentTime=0; aP.play(); d.classList.add('ok'); check(); } }; g.appendChild(d); }); }
+function draw() { if(!bag.length || winLock) return; aD.currentTime=0; aD.play(); curr = bag.pop(); setTimeout(() => { document.getElementById('slot').innerHTML = '<img src="'+curr+'">'; }, 300); }
+function check() { [1,2].forEach(n => { if(document.getElementById('g' + n).querySelectorAll('.chip.ok').length === SIZE) { if(!winLock) { aW.currentTime=0; aW.play(); winLock = true; } document.getElementById('st').innerText = 'Знаток сказок Пушкина!!!'; } }); }
+</script>
+</body>
 </html>
+
