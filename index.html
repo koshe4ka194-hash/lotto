@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root { --wood: #0b5c0a; }
+        body { margin:0; padding:10px; background: radial-gradient(circle, var(--wood) 0%, #000 150%); font-family: sans-serif; color:white; display:flex; justify-content:center; overflow:hidden; }
+        .wrapper { width:100%; max-width:800px; display:flex; flex-direction:column; align-items:center; gap:15px; }
+        .bag { background:#fdf5e6; border:5px solid #8d6e63; border-radius:25px; padding:15px; width:160px; text-align:center; color:#3e2723; box-shadow:0 10px 20px rgba(0,0,0,0.5); }
+        #token { width:80px; height:80px; background:#d7ccc8; border-radius:50%; margin:10px auto; display:flex; align-items:center; justify-content:center; box-shadow:inset 0 4px 6px rgba(0,0,0,0.3); border:2px solid #a1887f; }
+        #token img { width:70%; height:70%; object-fit:contain; }
+        .btn { background: linear-gradient(180deg, #ffb74d 0%, #f57c00 100%); border:none; padding:10px 20px; border-radius:10px; color:white; font-weight:bold; cursor:pointer; box-shadow:0 5px 0 #b71c1c; }
+        .btn:active { transform:translateY(3px); box-shadow:0 2px 0 #b71c1c; }
+        .row { display:flex; gap:15px; width:100%; justify-content:center; }
+        .card { background:white; border-radius:15px; padding:12px; flex:1; max-width:320px; box-shadow:0 8px 20px rgba(0,0,0,0.4); color:#333; border-bottom:4px solid rgba(0,0,0,0.1); }
+        .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-top:10px; }
+        .chip { aspect-ratio:1; background:white; border-radius:50%; border:2px solid #eee; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; box-shadow:0 3px 5px rgba(0,0,0,0.2); }
+        .chip img { width:70%; height:70%; object-fit:contain; }
+        .chip.ok::after { content:"✔"; position:absolute; width:100%; height:100%; background:rgba(46,204,113,0.85); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; box-shadow:0 0 10px #2ecc71; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <h2 style="margin:0">Лото: Дикие животные</h2>
+    <div id="status" style="font-weight:bold; height:20px;">Загрузка...</div>
+    <div class="bag">
+        <div style="font-size:11px;">В МЕШКЕ: <span id="count">0</span></div>
+        <div id="token">?</div>
+        <button id="draw-btn" class="btn" onclick="draw()">ДОСТАТЬ</button>
+    </div>
+    <div class="row">
+        <div class="card"><center><b>ИГРОК 1</b></center><div id="g1" class="grid"></div></div>
+        <div class="card"><center><b>ИГРОК 2</b></center><div id="g2" class="grid"></div></div>
+    </div>
+    <button class="btn" style="background:#78909c; box-shadow:0 5px 0 #455a64; font-size:10px;" onclick="start()">СБРОСИТЬ</button>
+</div>
+<script>
+    const IMGS = ${JSON.stringify(imgs)};
+    const SIZE = 8;
+    let bag = [], curr = null;
+    function start() {
+        curr = null; document.getElementById('draw-btn').disabled = false;
+        document.getElementById('token').innerHTML = '?';
+        document.getElementById('status').innerText = "Ходите!";
+        let p = [...IMGS].sort(() => Math.random() - 0.5);
+        let p1 = p.slice(0, SIZE);
+        let p2 = p.slice(SIZE, SIZE * 2);
+        bag = [...p1, ...p2].sort(() => Math.random() - 0.5);
+        render('g1', p1); render('g2', p2); update();
+    }
+    function render(id, items) {
+        const g = document.getElementById(id); g.innerHTML = '';
+        items.forEach(src => {
+            const d = document.createElement('div'); d.className = 'chip';
+            d.innerHTML = '<img src="'+src+'">';
+            d.onclick = () => { if (src === curr) { d.classList.add('ok'); check(); } };
+            g.appendChild(d);
+        });
+    }
+    function draw() {
+        if (!bag.length) return;
+        curr = bag.pop();
+        document.getElementById('token').innerHTML = '<img src="'+curr+'">';
+        update();
+    }
+    function update() { document.getElementById('count').innerText = bag.length; }
+    function check() {
+        [1,2].forEach(n => {
+            if (document.getElementById('g'+n).querySelectorAll('.chip.ok').length === SIZE) {
+                document.getElementById('status').innerText = "Молодец!!! Ты победил!!!";
+                document.getElementById('draw-btn').disabled = true;
+            }
+        });
+    }
+    start();
+</script>
+</body>
+</html>
