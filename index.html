@@ -2,8 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        :root { --wood: #634fab; }
+        :root { --wood: #6d6bc7; }
         body { margin:0; padding:15px; background: radial-gradient(circle, var(--wood) 0%, #000 160%); font-family: sans-serif; color:white; display:flex; justify-content:center; overflow-x: hidden; }
         .wrapper { width:100%; max-width:850px; display:flex; flex-direction:column; align-items:center; gap:20px; }
         .bag { background:#fdf5e6; border:5px solid #8d6e63; border-radius:30px; padding:20px; width:180px; text-align:center; color:#3e2723; box-shadow:0 15px 30px rgba(0,0,0,0.5); }
@@ -11,18 +12,18 @@
         #token img { width:75%; height:75%; object-fit:contain; }
         .btn-3d { background: linear-gradient(180deg, #ffb74d 0%, #f57c00 100%); border:none; padding:12px 25px; border-radius:12px; color:white; font-weight:bold; cursor:pointer; box-shadow:0 6px 0 #b71c1c; text-transform:uppercase; transition:0.1s; }
         .btn-3d:active { transform:translateY(4px); box-shadow:0 2px 0 #b71c1c; }
-        .row { display:flex; flex-direction:row; gap:20px; width:100%; justify-content:center; flex-wrap: nowrap; }
+        .row { display:flex; flex-direction:row; gap:20px; width:100%; justify-content:center; }
         .card { background:white; border-radius:20px; padding:15px; flex:1; max-width:350px; box-shadow:0 10px 25px rgba(0,0,0,0.4); color:#333; border-bottom:6px solid rgba(0,0,0,0.1); min-height: 200px; }
         .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:10px; }
-        .chip { aspect-ratio:1; background:white; border-radius:50%; border:3px solid #eee; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; box-shadow:0 4px 6px rgba(0,0,0,0.2); min-height: 50px; }
+        .chip { aspect-ratio:1; background:white; border-radius:50%; border:3px solid #eee; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; box-shadow:0 4px 6px rgba(0,0,0,0.2); min-height: 60px; }
         .chip img { width:70%; height:70%; object-fit:contain; }
         .chip.ok::after { content:"✔"; position:absolute; width:100%; height:100%; background:rgba(46, 204, 113, 0.85); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:bold; box-shadow:0 0 15px #2ecc71; }
-        #status { font-weight:bold; font-size:20px; text-shadow:0 2px 4px rgba(0,0,0,0.5); text-align:center; height:25px; margin-bottom: 5px; }
+        #status { font-weight:bold; font-size:20px; text-shadow:0 2px 4px rgba(0,0,0,0.5); text-align:center; height:25px; }
     </style>
 </head>
 <body>
 <div class="wrapper">
-    <h1 style="margin:0">Лото: Сказки А.С.Пушкина</h1>
+    <h1 style="margin:0">Лото: Сказки Пушкина</h1>
     <div id="status">Загрузка...</div>
     <div class="bag">
         <div style="font-size:12px; font-weight:bold;">В МЕШКЕ: <span id="count">0</span></div>
@@ -36,45 +37,25 @@
     <button class="btn-3d" style="background:#607d8b; box-shadow:0 6px 0 #37474f; font-size:12px;" onclick="start()">СБРОСИТЬ</button>
 </div>
 <script>
-    // ВСТАВЬТЕ СВОИ ССЫЛКИ МЕЖДУ КВАДРАТНЫМИ СКОБКАМИ ЧЕРЕЗ ЗАПЯТУЮ В КАВЫЧКАХ
-    const IMGS = [
-        "https://cdn-icons-png.flaticon.com/128/2909/2909774.png",
-        "https://cdn-icons-png.flaticon.com/128/2909/2909808.png",
-        "https://cdn-icons-png.flaticon.com/128/2909/2909881.png",
-        "https://cdn-icons-png.flaticon.com/128/2909/2909846.png",
-        "https://cdn-icons-png.flaticon.com/128/2909/2909761.png",
-        "https://cdn-icons-png.flaticon.com/128/2909/2909890.png",
-        "https://cdn-icons-png.flaticon.com/128/1135/1135534.png",
-        "https://cdn-icons-png.flaticon.com/128/1135/1135544.png",
-        "https://cdn-icons-png.flaticon.com/128/1135/1135531.png",
-        "https://cdn-icons-png.flaticon.com/128/1135/1135538.png",
-        "https://cdn-icons-png.flaticon.com/128/1135/1135548.png",
-        "https://cdn-icons-png.flaticon.com/128/1135/1135530.png"
-    ];
-    
+    const IMGS = ["https://i.postimg.cc/4xThp14f/20260207-1911-Image-Generation-simple-compose-01kgwdwtm1f8caaq6gm2kw5cse.png","https://i.postimg.cc/nhtQq1VH/20260207-1911-Image-Generation-simple-compose-01kgwdwtm1f8caaq6gm2kw5cse-kopia.png","https://i.postimg.cc/dVKTG9QY/20260207-1911-Image-Generation-simple-compose-01kgwdwtm1f8caaq6gm2kw5cse-kopia-(2).png","https://i.postimg.cc/FKrdBsJP/20260207-1916-Image-Generation-simple-compose-01kgwe58qsfb4s6ehr7768gbqw.png","https://i.postimg.cc/Z5FvHy0c/20260207-1916-Image-Generation-simple-compose-01kgwe58qsfb4s6ehr7768gbqw-kopia.png","https://i.postimg.cc/nhY92QMK/20260207-1916-Image-Generation-simple-compose-01kgwe58qsfb4s6ehr7768gbqw-kopia-(2).png","https://i.postimg.cc/MG6MFKjy/20260207-1916-Image-Generation-simple-compose-01kgwe58qsfb4s6ehr7768gbqw-kopia-(3).png","https://i.postimg.cc/g2qLs6rJ/20260207-1916-Image-Generation-simple-compose-01kgwe58qsfb4s6ehr7768gbqw-kopia-(4).png","https://i.postimg.cc/nhtQq1VX/20260207-1916-Image-Generation-simple-compose-01kgwe58qsfb4s6ehr7768gbqw-kopia-(5).png","https://i.postimg.cc/50jHf7gq/20260207-1919-Image-Generation-simple-compose-01kgwea53ged8b84hpkxppnkwv-kopia.png","https://i.postimg.cc/ZR09J7HP/20260207-1919-Image-Generation-simple-compose-01kgwea53ged8b84hpkxppnkwv-kopia-(2).png","https://i.postimg.cc/263qCcGL/20260207-1919-Image-Generation-simple-compose-01kgwea53ged8b84hpkxppnkwv-kopia-(3).png","https://i.postimg.cc/0Q3zjYXW/20260207-1919-Image-Generation-simple-compose-01kgwea53ged8b84hpkxppnkwv-kopia-(4).png","https://i.postimg.cc/6pNGCh66/20260207-1919-Image-Generation-simple-compose-01kgwea53ged8b84hpkxppnkwv-kopia-(5).png"];
     const SIZE = 6;
     let bag = [], curr = null;
 
     function start() {
-        curr = null; 
-        document.getElementById('draw-btn').disabled = false;
+        curr = null; document.getElementById('draw-btn').disabled = false;
         document.getElementById('token').innerHTML = '?';
         document.getElementById('status').innerText = "Ходите!";
         let p = [...IMGS].sort(() => Math.random() - 0.5);
         let p1 = p.slice(0, SIZE);
         let p2 = p.slice(SIZE, SIZE * 2);
         bag = [...p1, ...p2].sort(() => Math.random() - 0.5);
-        render('grid1', p1); 
-        render('grid2', p2); 
-        update();
+        render('grid1', p1); render('grid2', p2); update();
     }
 
     function render(id, items) {
-        const g = document.getElementById(id); 
-        g.innerHTML = '';
+        const g = document.getElementById(id); g.innerHTML = '';
         items.forEach(src => {
-            const d = document.createElement('div'); 
-            d.className = 'chip';
+            const d = document.createElement('div'); d.className = 'chip';
             d.innerHTML = '<img src="'+src+'">';
             d.onclick = () => { if (src === curr) { d.classList.add('ok'); check(); } };
             g.appendChild(d);
@@ -93,13 +74,11 @@
     function check() {
         [1,2].forEach(n => {
             if (document.getElementById('grid'+n).querySelectorAll('.chip.ok').length === SIZE) {
-                document.getElementById('status').innerText = "Знаток сказок Пушкина!!!";
+                document.getElementById('status').innerText = "Знаток сказок Пушкина!";
                 document.getElementById('draw-btn').disabled = true;
             }
         });
     }
-
-    // Запуск игры после полной загрузки страницы
     window.onload = start;
 </script>
 </body>
