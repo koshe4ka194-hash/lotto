@@ -1,48 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<style>
-body { margin:0; padding:20px; background: radial-gradient(circle, #360ccf 0%, #000 180%); font-family: sans-serif; color:white; display:flex; flex-direction:column; align-items:center; min-height:100vh; overflow-x:hidden; }
-.bag { background:#fdf5e6; border:5px solid #8d6e63; border-radius:35px; padding:20px; width:220px; text-align:center; color:#3e2723; box-shadow:0 15px 35px rgba(0,0,0,0.6); margin-bottom:20px; }
-#slot { width:100px; height:100px; background:#d7ccc8; border-radius:50%; margin:15px auto; display:flex; align-items:center; justify-content:center; border:3px solid #a1887f; box-shadow:inset 0 4px 8px rgba(0,0,0,0.3); font-size:40px; }
-#slot img { width:80%; height:80%; object-fit:contain; }
-.btn { background:linear-gradient(180deg, #ffb74d, #f57c00); color:white; border:none; padding:12px 25px; border-radius:12px; font-weight:bold; cursor:pointer; box-shadow:0 6px 0 #b71c1c; text-transform:uppercase; font-size:16px; }
-.btn:active { transform:translateY(2px); box-shadow:0 2px 0 #b71c1c; }
-.row { display:flex; gap:25px; justify-content:center; width:100%; max-width:1100px; }
-.card { background:white; border-radius:25px; padding:20px; flex:1; box-shadow:0 10px 25px rgba(0,0,0,0.4); color:#333; min-width:300px; }
-.grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:15px; }
-.chip { height: 100px; background:white; border-radius:50%; border:2px solid #eee; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; box-shadow:0 3px 6px rgba(0,0,0,0.2); }
-.chip img { width:80%; height:80%; object-fit:contain; }
-.chip.ok::after { content:"✔"; position:absolute; width:100%; height:100%; background:rgba(46, 204, 113, 0.85); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:40px; font-weight:bold; box-shadow:0 0 10px #2ecc71; }
-#st { font-weight:bold; font-size:22px; text-align:center; margin-bottom:10px; height:28px; text-shadow:0 2px 4px rgba(0,0,0,0.5); }
-</style>
+    <meta charset="UTF-8">
+    <style>
+        body { margin:0; padding:15px; background: radial-gradient(circle, #360ccf 0%, #000 180%); font-family: sans-serif; color:white; display:flex; flex-direction:column; align-items:center; min-height:100vh; overflow-x:hidden; }
+        .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:100; }
+        .bag { background:#fdf5e6; border:5px solid #8d6e63; border-radius:35px; padding:15px; width:220px; text-align:center; color:#3e2723; box-shadow:0 15px 35px rgba(0,0,0,0.6); margin-bottom:15px; }
+        #slot { width:100px; height:100px; background:#d7ccc8; border-radius:50%; margin:10px auto; display:flex; align-items:center; justify-content:center; border:3px solid #a1887f; box-shadow:inset 0 4px 8px rgba(0,0,0,0.3); font-size:40px; }
+        #slot img { width:80%; height:80%; object-fit:contain; }
+        .btn { background:linear-gradient(180deg, #ffb74d, #f57c00); color:white; border:none; padding:12px 25px; border-radius:12px; font-weight:bold; cursor:pointer; box-shadow:0 6px 0 #b71c1c; text-transform:uppercase; font-size:16px; }
+        .btn:active { transform:translateY(2px); box-shadow:0 2px 0 #b71c1c; }
+        .row { display:flex; gap:25px; justify-content:center; width:100%; max-width:1100px; flex-wrap:nowrap; }
+        .card { background:white; border-radius:25px; padding:20px; flex:1; box-shadow:0 10px 25px rgba(0,0,0,0.4); color:#333; min-width:300px; }
+        .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:15px; }
+        .chip { height: 100px; background:white; border-radius:50%; border:2px solid #eee; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; box-shadow:0 3px 6px rgba(0,0,0,0.2); }
+        .chip img { width:80%; height:80%; object-fit:contain; }
+        .chip.ok::after { content:"✔"; position:absolute; width:100%; height:100%; background:rgba(46, 204, 113, 0.85); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:45px; font-weight:bold; box-shadow:0 0 10px #2ecc71; }
+        #st { font-weight:bold; font-size:22px; text-align:center; margin-bottom:10px; height:28px; text-shadow:0 2px 4px rgba(0,0,0,0.5); }
+    </style>
 </head>
 <body>
-<h2 style="margin:0 0 10px 0; font-size:28px;">Сказки А.С.Пушкина</h2>
-<div id="st">Ходите!</div>
-<div class="bag">
-<div style="font-size:13px; font-weight:bold;">В МЕШКЕ: <span id="cc">0</span></div>
-<div id="slot">?</div>
-<button class="btn" onclick="draw()">ПОТРЯСИ МЕШОК</button>
-</div>
-<div class="row">
-<div class="card"><center><b style="font-size:18px;">ИГРОК 1</b></center><div id="g1" class="grid"></div></div>
-<div class="card"><center><b style="font-size:18px;">ИГРОК 2</b></center><div id="g2" class="grid"></div></div>
-</div>
-<button class="btn" style="margin-top:25px; background:#607d8b; box-shadow:0 4px 0 #37474f; font-size:12px;" onclick="init()">СБРОСИТЬ</button>
+    <div id="startLayer" class="overlay">
+        <h2 style="color:white; margin-bottom:20px;">Сказки А.С.Пушкина</h2>
+        <button class="btn" onclick="initGame()">НАЧАТЬ ИГРУ</button>
+    </div>
+    <h2 style="margin:0 0 10px 0; font-size:28px;">Сказки А.С.Пушкина</h2>
+    <div id="st">Ходите!</div>
+    <div class="bag">
+        <div style="font-size:13px; font-weight:bold;">В МЕШКЕ: <span id="cc">0</span></div>
+        <div id="slot">?</div>
+        <button class="btn" onclick="draw()">ПОТРЯСИ МЕШОК</button>
+    </div>
+    <div class="row">
+        <div class="card"><center><b style="font-size:18px;">ИГРОК 1</b></center><div id="g1" class="grid"></div></div>
+        <div class="card"><center><b>ИГРОК 2</b></center><div id="g2" class="grid"></div></div>
+    </div>
+    <button class="btn" style="margin-top:25px; background:#607d8b; box-shadow:0 4px 0 #37474f; font-size:12px;" onclick="resetGame()">СБРОСИТЬ</button>
+
 <script>
-const IMGS = ["https://github.com/koshe4ka194-hash/lotto/img/03.png","https://github.com/koshe4ka194-hash/lotto/img/04.png","https://github.com/koshe4ka194-hash/lotto/img/06.png","https://github.com/koshe4ka194-hash/lotto/img/08.png","https://github.com/koshe4ka194-hash/lotto/img/09.png","https://github.com/koshe4ka194-hash/lotto/img/2.png","https://github.com/koshe4ka194-hash/lotto/img/3.png","https://github.com/koshe4ka194-hash/lotto/img/5.png","https://github.com/koshe4ka194-hash/lotto/img/7.png","https://github.com/koshe4ka194-hash/lotto/img/10.png","https://github.com/koshe4ka194-hash/lotto/img/11.png","https://github.com/koshe4ka194-hash/lotto/img/12.png","https://github.com/koshe4ka194-hash/lotto/img/13.png","https://github.com/koshe4ka194-hash/lotto/img/14.png","https://github.com/koshe4ka194-hash/lotto/img/15.png","https://github.com/koshe4ka194-hash/lotto/img/16.png","https://github.com/koshe4ka194-hash/lotto/img/17.png","https://github.com/koshe4ka194-hash/lotto/img/18.png"];
-const SIZE = 6;
-let bag = [], curr = null;
-const sShake = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_7314751480.mp3");
-const sClick = new Audio("https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a14d5e.mp3");
-const sWin = new Audio("https://cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3");
-function init() { curr = null; document.getElementById("slot").innerHTML = "?"; document.getElementById("st").innerText = "Игра началась!"; let p = [...IMGS].sort(() => Math.random() - 0.5); let p1 = p.slice(0, SIZE); let p2 = p.slice(SIZE, SIZE * 2); bag = [...p1, ...p2].sort(() => Math.random() - 0.5); render("g1", p1); render("g2", p2); document.getElementById("cc").innerText = bag.length; }
-function render(id, items) { const g = document.getElementById(id); g.innerHTML = ""; items.forEach(src => { const d = document.createElement("div"); d.className = "chip"; d.innerHTML = "<img src='"+src+"'>"; d.onclick = () => { if(src===curr) { sClick.currentTime = 0; sClick.play(); d.classList.add("ok"); check(); } }; g.appendChild(d); }); }
-function draw() { if(!bag.length) return; sShake.currentTime = 0; sShake.play(); curr = bag.pop(); setTimeout(() => { document.getElementById("slot").innerHTML = "<img src='"+curr+"'>"; document.getElementById("cc").innerText = bag.length; document.getElementById("st").innerText = "Ищите картинку!"; }, 300); }
-function check() { [1,2].forEach(n => { if(document.getElementById("g"+n).querySelectorAll(".chip.ok").length === SIZE) { sWin.play(); document.getElementById("st").innerText = "ВЫ ПОБЕДИЛИ! 🎉"; } }); }
-window.onload = init;
+    const IMGS = ${JSON.stringify(names)};
+    const SIZE = 6;
+    const sShake = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_7314751480.mp3");
+    const sClick = new Audio("https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a14d5e.mp3");
+    const sWin = new Audio("https://cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3");
+    let bag = [], curr = null;
+
+    function initGame() {
+        document.getElementById('startLayer').style.display = 'none';
+        sShake.play().then(() => sShake.pause());
+        resetGame();
+    }
+
+    function resetGame() {
+        curr = null; document.getElementById("slot").innerHTML = "?";
+        document.getElementById("st").innerText = "Игра началась!";
+        let p = [...IMGS].sort(() => Math.random() - 0.5);
+        let p1 = p.slice(0, SIZE); let p2 = p.slice(SIZE, SIZE * 2);
+        bag = [...p1, ...p2].sort(() => Math.random() - 0.5);
+        render("g1", p1); render("g2", p2);
+        document.getElementById("cc").innerText = bag.length;
+    }
+
+    function render(id, items) {
+        const g = document.getElementById(id); g.innerHTML = "";
+        items.forEach(src => {
+            const d = document.createElement("div"); d.className = "chip";
+            d.innerHTML = "<img src='"+src+"' onerror='this.parentNode.innerText=\"❌\"'>";
+            d.onclick = () => { if(src===curr) { sClick.currentTime = 0; sClick.play(); d.classList.add("ok"); check(); } };
+            g.appendChild(d);
+        });
+    }
+
+    function draw() {
+        if(!bag.length) return;
+        sShake.currentTime = 0; sShake.play();
+        curr = bag.pop();
+        setTimeout(() => {
+            document.getElementById("slot").innerHTML = "<img src='"+curr+"'>";
+            document.getElementById("cc").innerText = bag.length;
+            document.getElementById("st").innerText = "Ищите картинку!";
+        }, 300);
+    }
+
+    function check() {
+        [1,2].forEach(n => {
+            if(document.getElementById("g"+n).querySelectorAll(".chip.ok").length === SIZE) {
+                sWin.play(); document.getElementById("st").innerText = "ВЫ ПОБЕДИЛИ! 🎉";
+            }
+        });
+    }
 </script>
 </body>
 </html>
